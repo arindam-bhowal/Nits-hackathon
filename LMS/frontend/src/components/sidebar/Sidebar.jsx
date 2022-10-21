@@ -51,7 +51,7 @@ import {
                 <li className="nav-link">
                   <Link to="/">
                     <Layers className="sidebar-icon" />
-                    <span className="text nav-text">Maps</span>
+                    <span className="text nav-text">Dashboard</span>
                   </Link>
                 </li>
   
