@@ -10,14 +10,12 @@ const studentSchema = new mongoose.Schema({
     rollNo : {type: String, required: true, unique: true},
     courseName : {type: String, required: true},
     deptName: {type: String, required: true},
-    address: {type: String, required: true},
+    address: {type: String},
     phoneNumber: {type: Number, required: true},
     semester : {type: Number, required: true},
-    father_name : String,
-    mother_name: String,
-    assignments: Array,
-    examinations : Array,
-    attendence : Array,
+    // assignments: Array,
+    // examinations : Array,
+    // attendence : Array,
     personal_details: Array
 })
 

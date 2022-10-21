@@ -36,7 +36,7 @@ import {
             <div className="image-text">
               {/* <span className="image"><img src="/assets/logo.png" alt="" /></span> */}
               <div clareact-roussName="text logo-text">
-                <span className="name">🚩Red Flags</span>
+                <span className="name">Nits Toolkit</span>
               </div>
             </div>
             <ChevronRightOutlined
@@ -58,21 +58,21 @@ import {
                 <li className="nav-link">
                   <Link to="/charts">
                     <ShowChart className="sidebar-icon" />
-                    <span className="text nav-text">Charts</span>
+                    <span className="text nav-text">Todo</span>
                   </Link>
                 </li>
   
                 <li className="nav-link">
                   <Link to="/quiz">
                     <Quiz className="sidebar-icon" />
-                    <span className="text nav-text">Quiz</span>
+                    <span className="text nav-text">Blogs</span>
                   </Link>
                 </li>
                 
                 <li className="nav-link">
                   <Link to="/emission">
                     <Co2 className="sidebar-icon" />
-                    <span className="text nav-text">Calculator</span>
+                    <span className="text nav-text">Resume Generator</span>
                   </Link>
                 </li>
               </ul>

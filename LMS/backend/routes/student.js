@@ -1,29 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const CryptoJs = require("crypto-js");
+// const CryptoJs = require("crypto-js");
+const bcrypt = require("bcrypt");
 
 const Student = require('../models/Student')
 const { generateAccessToken, verify } = require('../verifyToken')
 
 
-// ----------------------Adding a new company details in database------------
+// ----------------------Adding a new Student details in database------------
 
 //REGISTER
 router.post("/register", async (req, res) => {
     try {
         //generate new password
-        const encryptedPassword = CryptoJs.AES.encrypt(
-            req.body.Password,
-            process.env.SECRETE_MESSAGE
-        ).toString();
-        req.body.Password = encryptedPassword;
+        // const encryptedPassword = CryptoJs.AES.encrypt(
+        //     req.body.Password,
+        //     process.env.SECRETE_MESSAGE
+        // ).toString();
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-        //create new user
+        req.body.password = hashedPassword;
+
         const newStudent = new Student(req.body);
-
-        //save user and respond
         await newStudent.save();
+
         res.status(200).json(newStudent);
     } catch (err) {
         res.status(500).json(err)
@@ -41,19 +43,14 @@ router.post("/login", async (req, res) => {
         const user = await Student.findOne({ email: email });
         !user && res.status(404).json("user not found");
 
-        const actualPassword = await CryptoJs.AES.decrypt(user.password, process.env.SECRETE_MESSAGE)
-            // const validPassword = await bcrypt.compare(password, user.password)
-            (password !== actualPassword) && res.status(400).json("wrong password")
+        const validPassword = await bcrypt.compare(password, user.password)
+        !validPassword && res.status(400).json("wrong password")
 
-        //Generate an access token
         const accessToken = generateAccessToken(user);
-        // const refreshToken = generateRefreshToken(user);
-
-        // refreshTokens.push(refreshToken);
 
         res.json({
             student_id: user._id,
-            accessToken,
+            accessToken
         });
 
     } catch (error) {
@@ -63,7 +60,7 @@ router.post("/login", async (req, res) => {
 });
 
 
-// ----------------------Get all Companies registered from database ----------------
+// ----------------------Get all Students registered from database ----------------
 
 router.get("/all", async (req, res) => {
     try {
@@ -80,7 +77,24 @@ router.get("/all", async (req, res) => {
     }
 });
 
-// ---------------------Update a company from database-----------------
+// ----------------------Get a Students registered from database ----------------
+
+router.get("/get/:userId", verify, async (req, res) => {
+    try {
+        if (req.user.id === req.params.userId) {
+            const reqStudent = await Student.findById(req.params.userId);
+            const { password, ...otherInfo } = reqStudent._doc;
+            res.status(200).json(otherInfo);
+        } else {
+            res.status(403).json("You are not allowed to access this site!");
+        }
+    } catch (error) {
+        // We will come to the error page later
+        res.status(500).json(error);
+    }
+});
+
+// ---------------------Update a Student from database-----------------
 
 router.put("/update/:userId", verify, async (req, res) => {
     if (req.user.id === req.params.userId) {
@@ -112,7 +126,7 @@ router.put("/update/:userId", verify, async (req, res) => {
     }
 });
 
-// ----------------------Delete a company from database ----------------
+// ----------------------Delete a Student from database ----------------
 
 router.delete("/delete/:userId", verify, async (req, res) => {
     if (req.user.id === req.params.userId) {
