@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <title>NO_NOKOL</title>
+  </head>
+    <body>
+      <div class="header">
+        <div class="grad-bar"></div>
+        <div class="header-real">
+          <div class="menu-toggle" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+        <div class="overlay"></div>
+        <div class="container">
+          <nav class="pt-0">
+            <h1 class="brand"><a href="/" style="text-decoration: none; color: rgb(9, 31, 102);"><span id="blink">No</span>_Nokol</a></h1> 
+            <ul>
+                <li><a class="link-styles" href="/"><span style="font-weight: 800;">English</span> Plag-Check</a></li>
+              <li><a class="link-styles" href="/multilingual"><span style="font-weight: 800;">Translated-Multilingual</span> PLag-Check</a></li>
+              <li><a class="link-styles" href="/intelligent"><span style="font-weight: 800;">Intelligent</span> Plag-Check</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <!--Content before waves-->
+      <div class="inner-header flex">
+        <div class="container">
+          <div id="loading" class="loading">
+            Loading&#8230;     
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="mb-3 mt-3">
+                <h2 class="mb-3" style="font-weight: 300">Direct Multilingual</h2>
+                <form action="/dmultilingual" method="POST" enctype="multipart/form-data">
+                  <!-- Select language start-->
+                  <label for="language"></label>
+                  <select class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" name="delimiter" aria-label=".form-select-sm example" id="language">
+                    <option selected value="." class="dropdown-menu">Select language</option>
+                    <option value="." class="dropdown-item">Arabic</option>
+                    <option value="।" class="dropdown-item">Assamese</option>
+                    <option value="।" class="dropdown-item">Bangla</option>
+                    <option value="。" class="dropdown-item">Chinese(literary)</option>
+                    <option value="." class="dropdown-item">Filipino</option>
+                    <option value="." class="dropdown-item">French</option>
+                    <option value="." class="dropdown-item">German</option>
+                    <option value="." class="dropdown-item">Gujarati</option>
+                    <option value="।" class="dropdown-item">Hindi</option>
+                    <option value="." class="dropdown-item">Indonesian</option>
+                    <option value="." class="dropdown-item">Italian</option>
+                    <option value="。" class="dropdown-item">Japanese</option>
+                    <option value="." class="dropdown-item">Kannada</option>
+                    <option value="." class="dropdown-item">Korean</option>
+                    <option value="." class="dropdown-item">Malayalam</option>
+                    <option value="." class="dropdown-item">Marathi</option>
+                    <option value="။" class="dropdown-item">Myanmar</option>
+                    <option value="।" class="dropdown-item">Nepali</option>
+                    <option value="|" class="dropdown-item">Odia</option>
+                    <option value="." class="dropdown-item">Punjabi</option>
+                    <option value="." class="dropdown-item">Russian</option>
+                    <option value="." class="dropdown-item">Spanish</option>
+                    <option value="." class="dropdown-item">Tamil</option>
+                    <option value="." class="dropdown-item">Telugu</option>
+                    <option value="۔" class="dropdown-item">Urdu</option>
+                  </select><br/><br>
+                  <!-- Select language end-->
+                  <div class="form-group">
+                    <label class="form-label custom-file-label" for="formFileLg >Select file</label>
+                    <div class="custom-file">
+                      <input type="file"  class="form-control form-control-lg custom-file-input" name="file" id="file" style="margin-bottom: 10px;"/>
+                      <p id="size" style="color: rgb(18, 1, 41); font-weight: bolder; font-size: large;"></p><br />
+                      <label id="progress-label" class="custom-file-label " for="file">Select file...</label>
+                        <div id="feedback" ></div>
+                      <progress class="d-none" id="progress" value="0" max="100"> </progress>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="margin-left:-95px; margin-right: 13px;" id="saveBtn" onClick="showSpinner()">Start Checking</button>
+                  <a href="javascript:location.reload(true)">
+                    <span class="glyphicon"></span><img src="/static/assets/reload.gif" alt="refresh button" height="36px" width="55px">
+                  </a>
+                  <a href="#non-assamese" style="position: relative;">
+                    <span class="glyphicon" style=" z-index: 1; position: absolute;  white-space: nowrap ; color: white; margin-top: 9px; margin-left: 11px; font-size: 16.5px;">Text Input</span><img src="/static/assets/text.gif" alt="refresh button" height="45px" width="102px" style=" position: absolute;">
+                  </a>
+
+
+                  <!-- modal start -->
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-link link-dark" style="margin-left:6.2rem;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add Source filter
+                  </button>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Source Filter (URL)</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>The source filter URL will be excluded from the results</p>
+                          <input class="form-control form-control-sm" type="text" placeholder="Source filter URL (optional)" name="sourceFilter">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- modal-end -->
+                </form> 
+              </div>
+            </div>
+          </div>
+        </div>
+        <d class="d-flex justify-content-center mt-3">
+          <div class="alert alert-warning d-none mb-3 mt-3" id="alert-modal"><span style="font-weight: bolder; color:red">WARNING!</span> File size greater than 20mb not allowed.</div>
+
+          <div class="alert alert-success d-none mb-3 mt-5" id="alert-modal-ext"><span style="font-weight: bolder; color:seagreen">INFO!</span> File extension allowed are: .DOC |.TXT |.PDF |.ODT</div>
+  
+        </d>
+       
+      <!--Waves Container-->
+      <div class="waves">
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+        <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+        <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+        <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+        </svg>
+      </div>
+     <!--Waves end-->
+    </div>
+     <!--Header ends-->
+      <div class="container my-5 d-flex flex-column" id="non-assamese">
+        <div class="alert alert-info" role="alert" style="text-align: center;">
+          How it works: Direct multilingual plagiarism checker breaks the document into sentences and looks for matches of those sentences on the web.
+        </div>
+        <form action="/dmultilingualtext" method="POST">
+          <label for="language">Select a language</label>
+                  <select class="form-select form-select-sm my-3" name="delimiter" aria-label=".form-select-sm example" id="language">
+                    <option selected value=".">Open this select menu</option>
+                    <option value=".">Arabic</option>
+                    <option value="।">Assamese</option>
+                    <option value="।">Bangla</option>
+                    <option value="。">Chinese(literary)</option>
+                    <option value=".">Filipino</option>
+                    <option value=".">French</option>
+                    <option value=".">German</option>
+                    <option value=".">Gujarati</option>
+                    <option value="।">Hindi</option>
+                    <option value=".">Indonesian</option>
+                    <option value=".">Italian</option>
+                    <option value="。">Japanese</option>
+                    <option value=".">Kannada</option>
+                    <option value=".">Korean</option>
+                    <option value=".">Malayalam</option>
+                    <option value=".">Marathi</option>
+                    <option value="။">Myanmar</option>
+                    <option value="।">Nepali</option>
+                    <option value="|">Odia</option>
+                    <option value=".">Punjabi</option>
+                    <option value=".">Russian</option>
+                    <option value=".">Spanish</option>
+                    <option value=".">Tamil</option>
+                    <option value=".">Telugu</option>
+                    <option value="۔">Urdu</option>
+                  </select>
+          <input class="form-control form-control-sm" type="text" placeholder="Source filter URL (optional)" name="sourceFilter">
+          <textarea
+          id='output'
+          style="margin-top: 20px;"
+            name="input"
+            class="form-control textArea"
+            rows="10"
+            placeholder="Enter the text"
+          ></textarea>
+          <button type="submit" class="btn btn-outline-primary" id="buttonBootstrap" style="margin-top: 10px;" onClick="showSpinner()">Submit</button>
+         
+        </form>
+      </div>
+
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"
+      ></script>
+      <script src="{{ url_for('static', filename='app.js') }}"></script>
+      <script src="{{ url_for('static', filename='voice.js') }}"></script>
+      <script src="{{ url_for('static', filename='navbar.js') }}"></script>
+  </body>
+</html>
